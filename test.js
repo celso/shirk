@@ -2,9 +2,15 @@
 
 var slack = require('./lib/index.js');
 
-var email = process.env['email'];
-var password = process.env['password'];
-var team = process.env['team'];
+if(process.argv.length < 5) {
+    console.log("Missing arguments, type:");
+    console.log("npm run test -- team email password");
+    return;
+}
+
+var team = process.argv[2];
+var email = process.argv[3];
+var password = process.argv[4];
 
 slack.getSession({
     team: team,

@@ -1,15 +1,17 @@
 # Shirk
 
-An unofficial but useful Slack client library based on the private client APIs.
+An unofficial but eventually useful private API based Slack library with minimal dependencies.
 
-This module authenticates a normal slack user (not a bot) and creates a normal session, in the same way as the browser does, which is then used to call the same private API methods as the official web client.
+This module authenticates agaisn't a normal slack user (not a bot) credentials, no token required, and creates a normal session, in the same way as the browser does, which is then used to call the same private API methods as the official web client.
 
-This is useful when you don't have access to a token to connect your bot to the official Slack API. You can just use this module to connect using your normal user credentials.
+This is useful when you don't have access to a token to connect your bot to the official Slack API.
+
+You can just use this module to connect to any slack using your normal user credentials.
 
 Please note that:
 
  * Only a minimal set of methods are supported.
- * It may break at any moment for obvious reasons.
+ * Some scrapping is involved, as well as undocumented private APIs, so it may break at any moment.
 
 ## How to install
 
@@ -17,19 +19,23 @@ Please note that:
 npm install --save shirk
 ```
 
+## How to test
+
+```
+npm run test -- teamname email@domain.com PaSsw0rd
+```
+
+You can find the example test [code here][1].
+
 ## How to use
 
 ```javascript
 var shirk = require('shirk');
 
-var email = process.env['email'];
-var password = process.env['password'];
-var team = process.env['team'];
-
 shirk.getSession({
-    team: team,
-    email: email,
-    password: password,
+    team: 'teamname',
+    email: 'email@domain.com',
+    password: 'PaSsw0rd',
     channels: ['general', 'random'],
     onError: function(err) {
         console.log(err);
@@ -42,3 +48,5 @@ shirk.getSession({
     }
 });
 ```
+
+[1]: https://github.com/celso/shirk/blob/master/test.js
