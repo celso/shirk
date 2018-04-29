@@ -20,5 +20,25 @@ npm install --save shirk
 ## How to use
 
 ```javascript
-    var random = require("simple-node-module");
+var shirk = require('shirk');
+
+var email = process.env['email'];
+var password = process.env['password'];
+var team = process.env['team'];
+
+shirk.getSession({
+    team: team,
+    email: email,
+    password: password,
+    channels: ['general', 'random'],
+    onError: function(err) {
+        console.log(err);
+    },
+    onMessage: function(message) {
+        console.log(message);
+    },
+    onSession: function() {
+        // your stuff here
+    }
+});
 ```
