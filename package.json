@@ -1,0 +1,12 @@
+{
+  "name": "shirk",
+  "version": "0.0.1",
+  "description": "An unofficial but eventually useful private API based Slack library",
+  "main": "lib/index.js",
+  "repository": "git@github.com:celso/shirk.git",
+  "author": "Celso Martinho <github@celso.io>",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.85.0"
+  }
+}
