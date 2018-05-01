@@ -67,11 +67,11 @@ Starts a Slack session.
 
 args:
 
-    * team - team name (without slack.com)
-    * email - acccount
-    * password - password
-    * onError(err) - callback function to return errors
-    * onSession(session) - callback function to return a good session
+ * team - team name (without slack.com)
+ * email - acccount
+ * password - password
+ * onError(err) - callback function to return errors
+ * onSession(session) - callback function to return a good session
 
 **session.info()**
 
@@ -83,9 +83,9 @@ Listens for messages in a list of channels. Fires up events when a new message a
 
 args:
 
-    * channels - array of channels to listen to
-    * onError(err) - callback function to return errors
-    * onMessage(message) - callback function when a new message arrives
+ * channels - array of channels to listen to
+ * onError(err) - callback function to return errors
+ * onMessage(message) - callback function when a new message arrives
 
 example of message:
 
@@ -129,7 +129,7 @@ shirk.getSession({
 });
 ```
 
-***real usernames and channelnames are added to the message structure, along with the ids, for convenience, both from normal users or bots***
+_real usernames and channelnames are added to the message structure, along with the ids, for convenience, both from normal users or bots_
 
 ## Data structures
 
