@@ -4,7 +4,7 @@ var slack = require('./lib/index.js');
 
 if (process.argv.length < 5) {
     console.log("Missing arguments, type:");
-    console.log("npm run test -- team email password");
+    console.log("npm run test -- team email password [channel1,channel2,...]");
     return;
 }
 

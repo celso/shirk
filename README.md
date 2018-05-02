@@ -1,17 +1,14 @@
 # Shirk
 
-An unofficial but eventually useful private API based Slack library with minimal dependencies.
+An unofficial but eventually useful tokenless Slack library with minimal dependencies.
 
-This module authenticates agaisn't a normal slack user (not a bot) credentials, no token required, and creates a normal session, in the same way as the browser does, which is then used to call the same private API methods as the official web client.
+Shirk authenticates agaisn't normal user credentials (email and password) and doesn't require any bot token to operate. It creates a valid session by emulating the browser behaviour just like the official Slack web client.
 
-This is useful when you don't have access to a token to connect your bot to the official Slack API.
-
-You can just use this module to connect to any slack using your normal user credentials.
+This is useful when you don't have access to a token to connect your bot and use the official Slack API.
 
 Please note that:
 
- * Only a minimal set of methods are supported.
- * Some scrapping is involved, as well as undocumented private APIs, so it may break at any moment.
+ * Some scrapping is involved, as well as undocumented private APIs, so this may break at any moment.
  * 2FA is not yet supported
 
 ## How to install
@@ -30,8 +27,12 @@ You can find the example test [code here][1].
 
 ## How to use
 
+Here's an example:
+
 ```javascript
 var shirk = require('shirk');
+
+const channels=['general', 'random'];
 
 shirk.getSession({
     team: 'teamname',
@@ -49,7 +50,7 @@ shirk.getSession({
         console.log("Listening to channels "+channels.join(','));
 
         session.listenChannels({
-            channels: ['general', 'random'],
+            channels: channels,
             onMessage: function(message) {
                 console.log(message);
             }
@@ -102,7 +103,7 @@ example of message:
 
 ## Using Slack's Web API methods
 
-You can use any normal Slack API method after getting a valid session with getSession(). Here's an example:
+You can use any normal [Slack API method][2] after getting a valid session with getSession(). Here's an example:
 
 ```javascript
 var shirk = require('shirk');
