@@ -17,8 +17,8 @@ slack.getSession({
     team: team,
     email: email,
     password: password,
-    onError: function(err) {
-        console.log(err);
+    onError: function(error) {
+        console.log(error);
     },
     onSession: function(session) {
 
@@ -39,6 +39,9 @@ slack.getSession({
 
         session.listenChannels({
             channels: channels,
+            onError: function(error) {
+                console.log(error);
+            },
             onMessage: function(message) {
                 console.log(message);
             }
