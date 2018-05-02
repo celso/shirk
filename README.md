@@ -101,6 +101,8 @@ example of message:
   username: 'shirk' }
 ```
 
+_real usernames and channelnames are added to the message structure, along with the ids, for convenience, both from normal users or bots_
+
 ## Using Slack's Web API methods
 
 You can use any normal [Slack API method][2] after getting a valid session with getSession(). Here's an example:
@@ -129,8 +131,6 @@ shirk.getSession({
     }
 });
 ```
-
-_real usernames and channelnames are added to the message structure, along with the ids, for convenience, both from normal users or bots_
 
 ## Data structures
 
