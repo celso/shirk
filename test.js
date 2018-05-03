@@ -17,6 +17,7 @@ slack.getSession({
     team: team,
     email: email,
     password: password,
+    debug: true,
     onError: function(error) {
         console.log(error);
     },
