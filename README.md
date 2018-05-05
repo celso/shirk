@@ -73,6 +73,7 @@ args:
  * password - password
  * onError(err) - callback function to return errors
  * onSession(session) - callback function to return a good session
+ * debug - boolean, true if you want console debug
 
 **session.info()**
 
