@@ -12,5 +12,8 @@
     "dependencies": {
         "npm": "^6.0.0",
         "request": "^2.85.0"
+    },
+    "devDependencies": {
+        "@slack/client": "^4.2.0"
     }
 }

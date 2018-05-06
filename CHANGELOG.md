@@ -15,4 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed a couple of nasty bugs that resulted in errors over long periods of usage
 
+## [1.1.2] - 2018-05-XX
+### Added
+- Message events now include a meta structure while the user or bot data, for convenience
+
 [1.1.1]: https://github.com/celso/shirk/releases/tag/v1.1.1

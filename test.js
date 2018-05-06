@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 var slack = require('./lib/index.js');
 
 if (process.argv.length < 5) {
