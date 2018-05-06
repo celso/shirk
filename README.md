@@ -135,7 +135,7 @@ shirk.getSession({
 
 ## Data structures
 
-You can access these data structures once a session is opened:
+You can access these data structures once a session is open:
 
 **session.channels**
 
@@ -206,9 +206,14 @@ List of users in the team. Example:
 ]
 ```
 
+## Changelog
+
+You can check the [changelog here][3].
+
 ## Disclaimer
 
 I've made this library for my own use. Use it at your own risk. I assume no responsibility or liability for any errors or omissions with this software. The information contained here is provided on an “as is” basis with no guarantees of completeness, accuracy, usefulness or timeliness and without any warranties of any kind whatsoever, express or implied.
 
 [1]: https://github.com/celso/shirk/blob/master/test.js
 [2]: https://api.slack.com/methods
+[3]: CHANGELOG.md
