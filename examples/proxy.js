@@ -26,7 +26,7 @@ slack.getSession({
     team: team,
     email: email,
     password: password,
-    debug: false,
+    debug: true,
     onError: function(error) {
         console.log(error);
     },
@@ -46,7 +46,7 @@ slack.getSession({
             if (i != -1) {
 
                 const d_chid = d_channels[i].id;
-                var now = Math.floor( Date.now() / 1000 );
+                var now = Math.floor(Date.now() / 1000);
 
                 session.listenChannels({
                     channels: channels,
@@ -55,11 +55,13 @@ slack.getSession({
                     },
                     onMessage: function(message) {
 
-                        var ts = Math.floor( Date.now() / 1000 );
+                        var ts = Math.floor(Date.now() / 1000);
 
-                        console.log("Got a new message in channel "+message.channelname);
+                        console.log("Got a new message in channel " + message.channelname);
 
-                        if (ts - cool_off_period > now) { // chillout in the first seconds to avoid message storming
+                        console.log(message);
+
+                        if (ts - cool_off_period > now || true) { // chillout in the first seconds to avoid message storming
 
                             switch (message.subtype) {
                                 case undefined:
@@ -72,18 +74,22 @@ slack.getSession({
                                     return; // other subtypes don't matter
                                     break;
                             }
-                            web.chat.postMessage({
-                                    channel: d_chid,
-                                    mrkdwn: true,
-                                    unfurl_links: true,
-                                    unfurl_media: true,
-                                    username: user.real_name + ' @ ' + team + ' #' + message.channelname,
-                                    text: message.text
-                                })
-                                .then((res) => {
-                                    console.log('Message sent: ', res.ts);
-                                })
-                                .catch(console.error);
+                            var nm = {
+                                channel: d_chid,
+                                mrkdwn: true,
+                                unfurl_links: true,
+                                unfurl_media: true,
+                                username: user.real_name + ' @ ' + team + ' #' + message.channelname,
+                                text: message.text
+                            };
+                            if(message.attachments) nm.attachments = message.attachments;
+                            if(message.title) nm.title = message.title;
+                            if(message.title_link) nm.title_link = message.title_link;
+                            if(message.color) nm.color = message.color;
+
+                            web.chat.postMessage(nm).then((res) => {
+                                console.log('Message sent: ', res.ts);
+                            }).catch(console.error);
 
                         }
                     }
