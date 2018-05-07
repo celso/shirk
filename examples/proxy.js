@@ -26,7 +26,7 @@ slack.getSession({
     team: team,
     email: email,
     password: password,
-    debug: true,
+    debug: false,
     onError: function(error) {
         console.log(error);
     },
@@ -77,7 +77,7 @@ slack.getSession({
                             var nm = {
                                 channel: d_chid,
                                 mrkdwn: true,
-                                unfurl_links: true,
+                                unfurl_links: false,
                                 unfurl_media: true,
                                 username: user.real_name + ' @ ' + team + ' #' + message.channelname,
                                 text: message.text
