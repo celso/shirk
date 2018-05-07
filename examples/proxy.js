@@ -61,7 +61,7 @@ slack.getSession({
 
                         console.log(message);
 
-                        if (ts - cool_off_period > now || true) { // chillout in the first seconds to avoid message storming
+                        if (ts - cool_off_period > now) { // chillout in the first seconds to avoid message storming
 
                             switch (message.subtype) {
                                 case undefined:
