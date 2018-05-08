@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-var slack = require('../lib/index.js');
+const slack = require('../lib/index.js');
+const util = require('util')
+
 const {
     WebClient
 } = require('@slack/client');
@@ -59,33 +61,36 @@ slack.getSession({
 
                         console.log("Got a new message in channel " + message.channelname);
 
-                        console.log(message);
-
                         if (ts - cool_off_period > now) { // chillout in the first seconds to avoid message storming
+
+                            console.log(util.inspect(message, false, null))
+
+                            var nm = {
+                                channel: d_chid,
+                                mrkdwn: true,
+                                unfurl_links: false,
+                                unfurl_media: false,
+                                text: parseUsers(message.text, session.users)
+                            };
 
                             switch (message.subtype) {
                                 case undefined:
-                                    var user = message.meta.user;
+                                    nm.username = message.meta.user.real_name + ' @ ' + team + ' #' + message.channelname;
+                                    nm.icon_url = 'https://api.adorable.io/avatars/72/' + message.meta.user.id + '.png';
                                     break;
                                 case "bot_message":
-                                    var user = message.meta.bot;
+                                    nm.username = message.meta.bot.name + ' @ ' + team + ' #' + message.channelname;
+                                    nm.icon_url = message.meta.bot.icons.image_72;
                                     break;
                                 default:
                                     return; // other subtypes don't matter
                                     break;
                             }
-                            var nm = {
-                                channel: d_chid,
-                                mrkdwn: true,
-                                unfurl_links: false,
-                                unfurl_media: true,
-                                username: user.real_name + ' @ ' + team + ' #' + message.channelname,
-                                text: message.text
-                            };
-                            if(message.attachments) nm.attachments = message.attachments;
-                            if(message.title) nm.title = message.title;
-                            if(message.title_link) nm.title_link = message.title_link;
-                            if(message.color) nm.color = message.color;
+
+                            if (message.attachments) nm.attachments = message.attachments;
+                            if (message.title) nm.title = message.title;
+                            if (message.title_link) nm.title_link = message.title_link;
+                            if (message.color) nm.color = message.color;
 
                             web.chat.postMessage(nm).then((res) => {
                                 console.log('Message sent: ', res.ts);
@@ -120,4 +125,17 @@ function getChannels(callback) {
             callback(channels);
         }).catch(console.error);
     }).catch(console.error);
+}
+
+function parseUsers(m, userdb) {
+    var users = m.match(/<@[0-9A-Za-z]+>/gi);
+    for (var i in users) {
+        var user = users[i].match(/[0-9A-Za-z]+/i);
+        for (var u in userdb) {
+            if (userdb[u].id == user[0]) {
+                m = m.replace(users[i], "_" + userdb[u].real_name + "_,");
+            }
+        }
+    }
+    return (m);
 }
