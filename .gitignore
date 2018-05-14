@@ -60,4 +60,4 @@ typings/
 # other
 .githelp
 yarn.lock
-
+examples/example.json
