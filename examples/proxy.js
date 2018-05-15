@@ -48,7 +48,7 @@ slack.getSession({
                 if (i !== -1) {
                     channels_ids[channels[ci]] = d_channels[i].id;
                 } else {
-                    console.log("Can't find channel " + channels[ci] + ". Exiting.");
+                    console.log("Can't find channel " + config.destination.mappings[channels[ci]] + ". Exiting.");
                     process.exit(1);
                     return;
                 }
