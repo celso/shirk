@@ -53,6 +53,12 @@ shirk.getSession({
             channels: channels,
             onMessage: function(message) {
                 console.log(message);
+            },
+            onMessageThread: function(message) {
+                console.log(message);
+            },
+            onReaction: function(reaction) {
+                console.log(reaction);
             }
         });
 
@@ -88,6 +94,8 @@ args:
  * channels - array of channels to listen to
  * onError(err) - callback function to return errors
  * onMessage(message) - callback function when a new message arrives
+ * onMessageThread(message) - callback function when a new reaction to a message arrives
+ * onReaction(reaction) - callback function when a new reaction to a message arrives
 
 example of message:
 

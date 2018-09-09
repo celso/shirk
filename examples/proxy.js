@@ -14,10 +14,11 @@ if (process.argv.length < 3) {
 }
 
 var config = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
-const cool_off_period = 20; // in seconds
+const cool_off_timeout = Date.now() + 20000; // in miliseconds
 
 var channels = Object.keys(config.destination.mappings);
 var channels_ids = {};
+var ts_map = {};
 
 const web = new WebClient(config.destination.token);
 
@@ -55,55 +56,45 @@ slack.getSession({
             }
             // end mapping
 
-            var now = Math.floor(Date.now() / 1000);
+            var initDate = Date.now();
 
             session.listenChannels({
                 channels: channels,
                 onError: function(error) {
                     console.log(error);
                 },
+
                 onMessage: function(message) {
-
-                    var ts = Math.floor(Date.now() / 1000);
-
                     console.log("Got a new message in channel " + message.channelname);
+                    console.log(util.inspect(message, false, null))
+                    sendMessage(session, message);
+                },
 
-                    if (ts - cool_off_period > now) { // chillout in the first seconds to avoid message storming
+                onMessageThread: function(message) {
+                    console.log("Got a new threaded message in channel " + message.channelname);
+                    console.log(util.inspect(message, false, null))
+                    sendMessage(session, message);
+                },
 
-                        console.log(util.inspect(message, false, null))
+                onReaction: function(reaction) {
+                    console.log("Got a new reaction");
+                    console.log(util.inspect(reaction, false, null))
 
-                        var nm = {
-                            channel: channels_ids[message.channelname],
-                            mrkdwn: true,
-                            unfurl_links: false,
-                            unfurl_media: false,
-                            text: parseUsers(message.text, session.users)
-                        };
+                    console.log(channels_ids[reaction.channel]);
+                    console.log(ts_map[parseFloat(reaction.ts)]);
 
-                        switch (message.subtype) {
-                            case undefined:
-                                nm.username = message.meta.user.real_name + ' @ ' + config.source.team + ' #' + message.channelname;
-                                nm.icon_url = 'https://api.adorable.io/avatars/72/' + message.meta.user.id + '.png';
-                                break;
-                            case "bot_message":
-                                nm.username = message.meta.bot.name + ' @ ' + config.source.team + ' #' + message.channelname;
-                                nm.icon_url = message.meta.bot.icons.image_72;
-                                break;
-                            default:
-                                return; // other subtypes don't matter
-                                break;
-                        }
+                    if (channels_ids[reaction.channel] && ts_map[parseFloat(reaction.ts)]) {
 
-                        if (message.attachments) nm.attachments = message.attachments;
-                        if (message.title) nm.title = message.title;
-                        if (message.title_link) nm.title_link = message.title_link;
-                        if (message.color) nm.color = message.color;
-
-                        web.chat.postMessage(nm).then((res) => {
-                            console.log('Message sent: ', res.ts);
+                        web.reactions.add({
+                            name: reaction.name,
+                            channel: channels_ids[reaction.channel],
+                            timestamp: ts_map[parseFloat(reaction.ts)]
+                        }).then((res) => {
+                            console.log('Reaction sent');
                         }).catch(console.error);
 
                     }
+
                 }
 
             });
@@ -111,9 +102,47 @@ slack.getSession({
 
         });
 
-
     }
 });
+
+function sendMessage(session, message) {
+
+    if (cool_off_timeout > Date.now()) return; // chillout in the first seconds to avoid message storming
+
+    var nm = {
+        channel: channels_ids[message.channelname],
+        mrkdwn: true,
+        unfurl_links: false,
+        unfurl_media: false,
+        text: parseUsers(message.text, session.users)
+    };
+
+    switch (message.subtype) {
+        case undefined:
+            nm.username = message.meta.user.real_name + ' @ ' + config.source.team + ' #' + message.channelname;
+            nm.icon_url = 'https://api.adorable.io/avatars/72/' + message.meta.user.id + '.png';
+            break;
+        case "bot_message":
+            nm.username = message.meta.bot.name + ' @ ' + config.source.team + ' #' + message.channelname;
+            nm.icon_url = message.meta.bot.icons.image_72;
+            break;
+        default:
+            return; // other subtypes don't matter
+            break;
+    }
+
+    if (message.attachments) nm.attachments = message.attachments;
+    if (message.title) nm.title = message.title;
+    if (message.title_link) nm.title_link = message.title_link;
+    if (message.color) nm.color = message.color;
+    if (message.thread_ts && ts_map[parseFloat(message.thread_ts)]) nm.thread_ts = ts_map[parseFloat(message.thread_ts)]; // from a thread
+
+    web.chat.postMessage(nm).then((res) => {
+        console.log('Message sent: ', res.ts);
+        ts_map[parseFloat(message.ts)] = res.ts;
+    }).catch(console.error);
+
+}
 
 function getChannels(callback) {
 
