@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 var slack = require('./lib/index.js');
 
 if (process.argv.length < 5) {
@@ -44,7 +42,16 @@ slack.getSession({
                 console.log(error);
             },
             onMessage: function(message) {
+                console.log("--------- Message -----------");
                 console.log(message);
+            },
+            onMessageThread: function(message) {
+                console.log("--------- Thread Message -----------");
+                console.log(message);
+            },
+            onReaction: function(reaction) {
+                console.log("--------- Reaction -----------");
+                console.log(reaction);
             }
         });
 

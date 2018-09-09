@@ -1,0 +1,14 @@
+{
+    "source": {
+        "team": "teamname",
+        "email": "email@domain.com",
+        "password": "PaSsw0rd"
+    },
+    "destination": {
+        "token": "xoxb-3324424566-As84775ebDHy7474",
+        "mappings": {
+            "random": "random",
+            "echo": "random"
+        }
+    }
+}
