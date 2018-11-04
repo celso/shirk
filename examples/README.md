@@ -41,5 +41,9 @@ Feel free to change the code.
 }
 ```
 
+## Merge two channels
+
+In this example we invite all members of the *from* channel (public or private) to the *to* channel (public or private).
+
 [1]: https://slack.com/apps/A0F7YS25R-bots
 [2]: http://avatars.adorable.io/
