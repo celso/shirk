@@ -59,6 +59,9 @@ shirk.getSession({
             },
             onReaction: function(reaction) {
                 console.log(reaction);
+            },
+            onReady: function() {
+                console.log("We're listening");
             }
         });
 

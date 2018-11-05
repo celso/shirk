@@ -2,8 +2,9 @@
     "name": "shirk",
     "version": "1.1.3",
     "scripts": {
-        "test": "/usr/bin/env node test.js",
-        "proxy": "/usr/bin/env node examples/proxy.js"
+        "test": "if [ -f .env ]; then source .env; fi; node_modules/.bin/mocha",
+        "proxy": "/usr/bin/env node examples/proxy.js",
+        "merge": "/usr/bin/env node examples/merge.js"
     },
     "description": "An unofficial but eventually useful private API based Slack library",
     "main": "lib/index.js",
@@ -11,9 +12,12 @@
     "author": "Celso Martinho <github@celso.io>",
     "license": "MIT",
     "dependencies": {
+        "mocha": "^5.2.0",
         "npm": "^6.0.0",
         "object-hash": "^1.3.0",
-        "request": "^2.85.0"
+        "request": "^2.85.0",
+        "should": "^13.2.3",
+        "supertest": "^3.3.0"
     },
     "devDependencies": {
         "@slack/client": "^4.2.0"
