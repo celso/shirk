@@ -58,21 +58,33 @@ slack.getSession({
                         var to = channels.map(getName).indexOf(toName);
 
                         if (from !== -1 && to !== -1) {
-                            console.log(from);
-                            console.log(to);
-                            for (var m in channels[from].members) {
-                                console.log("Inviting " + channels[from].members[m] + " to channel #" + toName);
-                                session.callMethod(channels[to].is_group ? 'groups.invite' : 'channels.invite', {
-                                    channel: channels[to].id,
-                                    user: channels[from].members[m],
-                                    onError: function(error) {
-                                        console.log(error);
-                                    },
-                                    onSuccess: function(r) {
-                                        console.log(r);
+
+                            session.callMethod(channels[from].is_group ? 'groups.info' : 'channels.info', {
+                                channel: channels[from].id,
+                                onError: function(error) {
+                                    console.log(error);
+                                },
+                                onSuccess: function(ch) {
+                                    for (var m in ch.channel.members) {
+                                        var idx = session.users.map(getId).indexOf(ch.channel.members[m]);
+                                        console.log("Inviting " + session.users[idx].name + " to channel #" + toName);
+                                        session.callMethod(channels[to].is_group ? 'groups.invite' : 'channels.invite', {
+                                            channel: channels[to].id,
+                                            user: ch.channel.members[m],
+                                            onError: function(error) {
+                                                console.log("Error: " + error.toString());
+                                            },
+                                            onSuccess: function(r) {
+                                                if (r.ok) {
+                                                    console.log("  - Done (" + this + ")");
+                                                } else {
+                                                    console.log("  - ERROR! (" + this + ": " + r.error + ")");
+                                                }
+                                            }.bind(session.users[idx].name)
+                                        });
                                     }
-                                });
-                            }
+                                }
+                            });
 
                         } else {
                             console.log("Channel does not existe");
