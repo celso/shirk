@@ -23,5 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Proxy example and documention
 - General cleanup
 
+## [1.1.4] - 2019-07-05
+### Added
+- General improvements and minor bug fixes
+
 [1.1.1]: https://github.com/celso/shirk/releases/tag/v1.1.1
 [1.1.3]: https://github.com/celso/shirk/releases/tag/v1.1.3
+[1.1.4]: https://github.com/celso/shirk/releases/tag/v1.1.4
