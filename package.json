@@ -1,6 +1,6 @@
 {
     "name": "shirk",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "scripts": {
         "test": "if [ -f .env ]; then source .env; fi; node_modules/.bin/mocha",
         "proxy": "/usr/bin/env node examples/proxy.js",
